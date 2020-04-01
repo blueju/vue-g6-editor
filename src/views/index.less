@@ -1,0 +1,148 @@
+@backgroundColor: #fbfbfb;
+@borderColor: #dadce0;
+
+@itempannelAndPageBorder: 1px solid #ccc;
+@pageHeight: calc(100vh - 41px - 37px);
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#vue-g6-editor {
+  header:nth-of-type(1) {
+    background: @backgroundColor;
+    line-height: 40px;
+    padding-left: 20px;
+    border-bottom: 1px solid @borderColor;
+    box-sizing: border-box;
+  }
+  // 工具栏
+  #toolbar {
+    background: @backgroundColor;
+    border-bottom: 1px solid @borderColor;
+    padding: 4px 14px;
+    i {
+      font-size: 18px;
+      padding: 4px;
+      margin-right: 8px;
+      color: #999999;
+      &:hover {
+        cursor: pointer;
+        background-color: #eeeeee;
+        color: #5cb6ff;
+      }
+    }
+  }
+  // 元素面板
+  #itempannel {
+    box-sizing: border-box;
+    background-color: @backgroundColor;
+    border-right: 1px solid @borderColor;
+    height: @pageHeight;
+    padding-top: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    .getItem {
+      cursor: move;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  // 主画布
+  #page {
+    height: @pageHeight;
+    canvas {
+      // 去除canvas底部间隙
+      display: block;
+      width: 100%;
+    }
+  }
+  // 属性栏
+  #detailpannel {
+    height: @pageHeight;
+    background-color: @backgroundColor;
+    border-left: 1px solid @borderColor;
+    #nodeAttributeBar,
+    #edgeAttributeBar {
+      .title {
+        height: 34px;
+        line-height: 34px;
+        text-align: center;
+        box-sizing: border-box;
+        font-weight: bold;
+        font-size: 13px;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: @borderColor;
+      }
+      .main {
+        padding: 10px;
+      }
+    }
+  }
+}
+.wrap {
+  border: 1px solid #eee;
+  height: 650px;
+}
+.ph {
+  height: 610px;
+  width: 100%;
+}
+.el-icon {
+  font-size: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.el-icon:hover {
+  color: blue;
+}
+.toolbar {
+  padding: 6px 0;
+  background: #eee;
+}
+.left {
+  border-right: 1px solid #eee;
+  background: #fcfcfc;
+}
+.left .getItem {
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input1 {
+  width: 85%;
+  float: none !important;
+}
+.input2 {
+  width: 60%;
+  float: none !important;
+}
+.elform1 {
+  /*height: 380px;*/
+}
+.addC {
+  padding: 0px !important;
+}
+.inputStyle {
+  /*width: 292px!important;*/
+}
+.change .el-form-item__label {
+  margin-top: 16px !important;
+}
+.inputStyle1 {
+  width: 120px !important;
+}
