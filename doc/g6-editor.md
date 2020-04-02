@@ -1,26 +1,70 @@
 # 事件
 
+根据官网文档，事件包括鼠标事件、编辑器事件、数据变更事件、状态变更事件、控制事件这几类，官方文档仅仅只是做了模糊概括，并未详细列出有哪些事件。
+
+通过查阅原官方文档、查阅源码 和 实际操作，总结出以下事件列表：
+
 ## 事件列表
 
+> import G6Editor from "@antv/g6-editor";
+>
+> const editor = new G6Editor();
+>
+> const page = editor.getCurrentPage()
+
+| 事件                       | 备注 | 提供者        |
+| -------------------------- | ---- | ------------- |
+| aftercommandexecute        |      | editor 编辑器 |
+| beforecommandexecute       |      | editor 编辑器 |
+|                            |      |               |
+| afterchange                |      | page 画布     |
+| afterdelete                |      | page 画布     |
+| afteritemactived           |      | page 画布     |
+| afteritemselected          |      | page 画布     |
+| afteritemunactived         |      | page 画布     |
+| afteritemunselected        |      | page 画布     |
+| anchor:mousedown           |      | page 画布     |
+| anchor:mouseenter          |      | page 画布     |
+| anchor:mouseleave          |      | page 画布     |
+| anchor:mouseup             |      | page 画布     |
+| beforechange               |      | page 画布     |
+| beforeitemactived          |      | page 画布     |
+| beforeitemselected         |      | page 画布     |
+| beforeitemunactived        |      | page 画布     |
+| beforeitemunselected       |      | page 画布     |
+| click                      |      | page 画布     |
+| contextmenu                |      | page 画布     |
+| dragedge:beforeshowanchor  |      | page 画布     |
+| edge:mouseenter            |      | page 画布     |
+| edge:mouseleave            |      | page 画布     |
+| hoveranchor:beforeaddedge  |      | page 画布     |
+| hovernode:beforeshowanchor |      | page 画布     |
+| keyup                      |      | page 画布     |
+| mousedown                  |      | page 画布     |
+| mouseenter                 |      | page 画布     |
+| mouseleave                 |      | page 画布     |
+| mouseup                    |      | page 画布     |
+| node:click                 |      | page 画布     |
+| node:mousedown             |      | page 画布     |
+| node:mouseenter            |      | page 画布     |
+| node:mouseleave            |      | page 画布     |
+| node:mouseup               |      | page 画布     |
+| statuschange               |      | page 画布     |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
+|                            |      |               |
 
 
 
+## 如何绑定事件
 
-双击节点
-
-node:dblclick
-
-
-
-双击边
-
-edge:dblclick
-
-
-
-选择对象后
-
-> 以上所指对象，为"节点"或"边"
+使用 on 方法
 
 
 
@@ -40,7 +84,11 @@ console.log(events);
 
 # 方法
 
-将画布保存为数据模型，返回一个对象，
+方法有很多，我可能没办法将全部都列出来并解释，在实际操作中，更多的是需要大家自己通过在控制台打印的方式，在原型链中查找符合需求的方法。
+
+## 保存数据模型
+
+将画布数据保存为数据模型，执行该方法将返回一个包含节点数据和边数据的对象
 
 ```javascript
 import G6Editor from "@antv/g6-editor";
@@ -50,9 +98,9 @@ editor.getCurrentPage().save();
 // {nodes: [...], edges: [...]}
 ```
 
+## 保存为图片
 
-
-将画布保存为图片，返回一个canvas
+将画布数据数据保存为图片，执行该方法将返回一个canvas
 
 ```javascript
 import G6Editor from "@antv/g6-editor";
@@ -61,9 +109,9 @@ let editor = new G6Editor();
 editor.getCurrentPage().saveImage();
 ```
 
+## 读取数据
 
-
-读取数据模型
+读取数据模型，并展示在画板中，入参是一个包含节点数据和边数据的对象
 
 ```javascript
 import G6Editor from "@antv/g6-editor";
@@ -72,27 +120,73 @@ let dataModel = {...}
 editor.getCurrentPage().read(dataModel);
 ```
 
+# 命令
 
+## 内置命令
 
-# 命令列表
+### 内置命令列表
 
-但查阅源码发现，注册的内置命令不止上表的19个，此处存疑，如图：
+| 命令           | 备注 |
+| -------------- | ---- |
+| common         |      |
+| copyAdjacent   |      |
+| add            |      |
+| update         |      |
+| redo           |      |
+| undo           |      |
+| copy           |      |
+| pasteHere      |      |
+| paste          |      |
+| addGroup       |      |
+| unGroup        |      |
+| delete         |      |
+| selectAll      |      |
+| toBack         |      |
+| toFront        |      |
+| clear          |      |
+| multiSelect    |      |
+| move           |      |
+| append         |      |
+| appendChild    |      |
+| moveMindNode   |      |
+| collapseExpand |      |
+| collapse       |      |
+| expand         |      |
+| zoomTo         |      |
+| zoomIn         |      |
+| zoomOut        |      |
+| autoZoom       |      |
+| resetZoom      |      |
+
+### 内置命令的源码对应位置
+
+**源码文件：**g6Editor.js
+
+**源码对应位置：**将 g6Editor.js 格式化后，检索关键词 registerCommand("，如下图：
 
 ![image-20200401102141528](g6-editor.assets/image-20200401102141528.png)
 
 
 
+## 重载内置命令
 
 
-# 命令
 
-内置命令
 
-重载内置命令
 
-应用场景：
+## 注册自定义命令
 
-我想通过点击工具栏中的保存图标来保存数据模型，使用 editor.Command.registerCommand() 方法重载内置命令命令save，在其正向命令中，添加自己需要的处理逻辑。
+### 应用场景
+
+我想通过点击工具栏中的保存图标来保存数据模型
+
+```html
+<i data-command="save" class="command fa fa-floppy-o" title="保存"></i>
+```
+
+### 方案一
+
+使用 editor.Command.registerCommand() 方法注册自定义命令save，在其正向命令中，添加自己需要的处理逻辑。
 
 ```javascript
 Command.registerCommand("save", {
@@ -112,15 +206,15 @@ Command.registerCommand("save", {
 
 ```
 
+### 方案二
 
+当然我们有另外一种方式，即给保存图标添加点击事件，在方法中执行 editor.getCurrentPage().save() 方法。
 
-当然我们有另外一种方式，即给保存图标添加事件，在事件中执行 editor.getCurrentPage().save() 方法。
+### 注意
 
+注册的自定义命令中，即便你设置了快捷键，但还是默认不启用的。
 
-
-注册自定义命令
-
-注册的命令需要在设置为启用
+如果需要启用，需要按如下设置进行开启。
 
 ```javascript
 const flow = new G6Editor.Flow({
@@ -128,8 +222,7 @@ const flow = new G6Editor.Flow({
     container: "page"
   },
   shortcut: {
-    zoomIn: true, // 开启放大快捷键
-    zoomOut: true, // 开启视口缩小快捷键
+    // 开启保存快捷键
     save: true
   }
 });
@@ -145,7 +238,7 @@ const flow = new G6Editor.Flow({
 >
 > 源码文件：g6Editor.js
 >
-> 命令源码位置：将 g6Editor.js 格式化后，检索关键词 shortcutCodes: [
+> 源码对应位置：将 g6Editor.js 格式化后，检索关键词 shortcutCodes: [
 >
 > 官方文档PDF中的快捷键表格，存在错误，因为在源码检索 copy/paste 等命令并未发现其有快捷键
 
@@ -202,7 +295,11 @@ const flow = new G6Editor.Flow({
 
 
 
-内置边
+# 边
+
+## 内置边
+
+### 内置边列表
 
 |                       |                                                              |
 | --------------------- | ------------------------------------------------------------ |
@@ -221,9 +318,21 @@ const flow = new G6Editor.Flow({
 | koni-base             | 拖拽target目标节点时，边会围绕source源节点，自动调整为最近的锚点。<br />直线，带箭头，更适用于⽹络图/拓扑图。 |
 |                       |                                                              |
 
+### 内置边的源码对应位置
+
+**源码文件：**g6Editor.js
+
+**源码对应位置：**将 g6Editor.js 格式化后，检索关键词 registerCommand("，如下图：
+
+![image-20200402104501328](g6-editor.assets/image-20200402104501328.png)
 
 
 
+## 重载内置边
+
+
+
+## 注册自定义边
 
 
 
