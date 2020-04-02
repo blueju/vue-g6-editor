@@ -1,19 +1,42 @@
 # vue-g6-ediotr
 
-## Project setup
+[TOC]
+
+# 前言
+
+项目中使用到了 g6-editor，同时使用的是 Vue 框架。
+
+遂在工作实践中，结合两者整理了以下文档，并写了一个示例DEMO。
+
+
+
+# 文档
+
+[g6-editor 文档](./doc/g6-editor.md)
+
+
+
+# 安装依赖
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+
+
+# 启动服务
+
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+
+
+# 编译构建
+
 ```
 yarn build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
