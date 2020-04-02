@@ -12,6 +12,45 @@
 
 
 
+# 工具栏
+
+工具栏负责盛放一个操作按钮，类似 wangEditor 中顶部的操作工具按钮区域。
+
+g6-editor 已经为我们做好了许多工作，我们只需要按规范写好HTML标签，然后给它们配上合适的图标和标题。
+
+## 规范
+
+- 必须拥有 data-command 属性，并设置需要的命令，详见本文中内置命令列表。
+- class 中必须拥有 command。
+
+## 示例
+
+> 我使用的图标是 font-awesome
+
+```html
+<div id="toolbar">
+  <i data-command="save" class="command fa fa-floppy-o" title="保存"></i>
+  <i data-command="undo" class="command fa fa-undo" title="撤销"></i>
+  <i data-command="redo" class="command fa fa-repeat" title="重做"></i>
+  <i data-command="delete" class="command fa fa-trash-o" title="删除"></i>
+  <i data-command="zoomOut" class="command fa fa-search-minus" title="缩小"></i>
+  <i data-command="zoomIn" class="command fa fa-search-plus" title="放大"></i>
+  <i data-command="clear" class="command fa fa-eraser" title="清除画布"></i>
+  <i data-command="toFront" class="command fa fa-arrow-up" title="提升层级"></i>
+  <i data-command="toBack" class="command fa fa-arrow-down" title="下降层级"></i>
+  <i data-command="selectAll" class="command fa fa-check-square-o" title="全选"></i>
+  <i data-command="copy" class="command fa fa-files-o" title="复制"></i>
+  <i data-command="paste" class="command fa fa-clipboard" title="粘贴"></i>
+  <i data-command="autoZoom" class="command fa fa-expand" title="实际大小"></i>
+  <i data-command="resetZoom" class="command fa fa-compress" title="适应页面"></i>
+  <i data-command="addGroup" class="command fa fa-object-group" title="组合"></i>
+  <i data-command="unGroup" class="command fa fa-object-ungroup" title="取消组合"></i>
+  ....
+</div>
+```
+
+
+
 # 元素面板
 
 元素面板负责盛放一些可拖拽的元素，供使用人员拖拽到画板中。
@@ -117,6 +156,79 @@ g6-editor的官方文档中，并未提及元素图片，结合搜索引擎，�
 ### 高度
 
 必须在CSS中为画布设定高度
+
+
+
+# 属性栏
+
+属性栏一般在画布右侧，用于设置节点/边/画布等属性，类似这种：
+
+![image-20200402235716994](g6-editor.assets/image-20200402235716994.png)
+
+## 思路
+
+我初次看 g6-editor 文档的示例DEMO时，看到属性栏的HTML标签中含有 data-status="node-selected" 等属性，以为，但是在后续的操作，并未发现 data-status="*" 的属性的作用，也可能是我暂时没有发现。
+
+我在实践中感觉这里 g6-editor 并没有为我们提供什么现成的东西，更多是只是我们需要在右侧这一块区域，创建一些表单，在进行一些操作时（比如选中一个节点），通过API获取数据并填充到表单中，以此来展示所选元素的属性。
+
+## 示例
+
+```html
+<div id="detailpannel">
+  <!-- 节点属性栏 -->
+  <div id="nodeAttributeBar" data-status="node-selected">
+    <div class="title">节点属性</div>
+    <div class="main">
+      <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
+        <el-form-item label="节点文本">
+          <el-input v-model="nodeAttributeForm.label" @change="saveNodeAttribute"></el-input>
+        </el-form-item>
+        <el-form-item label="宽度">
+          <el-input v-model="nodeAttributeForm.width" @change="saveNodeAttribute"></el-input>
+        </el-form-item>
+        <el-form-item label="高度">
+          <el-input v-model="nodeAttributeForm.height" @change="saveNodeAttribute"></el-input>
+        </el-form-item>
+        <el-form-item label="颜色">
+          <el-color-picker v-model="nodeAttributeForm.color" @change="saveNodeAttribute"></el-color-picker>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+  <!-- 边属性栏 -->
+  <div id="edgeAttributeBar" data-status="edge-selected">
+    <div class="title">边属性</div>
+    <div class="main">
+      <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
+        <el-form-item label="边文本">
+          <el-input v-model="edgeAttributeForm.label" @change="saveEdgeAttribute"></el-input>
+        </el-form-item>
+        <el-form-item label="边文本">
+          <el-select v-model="edgeAttributeForm.shape" @change="saveEdgeAttribute">
+            <el-option label="流程图折线" value="flow-polyline"></el-option>
+            <el-option label="流程图圆⻆折线" value="flow-polyline-round"></el-option>
+            <el-option label="流程图曲线" value="flow-smooth"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</div>
+```
+
+## 官方文档示例
+
+> 未免也太简陋了。。。
+
+```html
+<div id="detailpannel">
+	<div data-status="node-selected">节点属性栏</div>
+	<div data-status="edge-selected">边属性栏</div>
+	<div data-status="group-selected">群组属性栏</div>
+	<div data-status="canvas-selected">画布属性栏</div>
+	<div data-status="multi-selected">多选时属性栏</div>
+</div>
+```
 
 
 
