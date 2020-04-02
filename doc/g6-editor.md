@@ -1,3 +1,115 @@
+
+
+# 元素面板
+
+元素面板负责盛放一些可拖拽的元素，供使用人员拖拽到画板中。
+
+## 元素
+
+元素仅仅是一个定义了一些属性和 class 的HTML标签，为了给予美观的效果，我一般会往元素标签中添加图片。
+
+g6-editor的官方文档中，并未提及元素图片，结合搜索引擎，我也仅搜索四种元素图片，格式为svg。
+
+如果你想自己自定义的元素图片，建议使用svg。
+
+| 名称     | 地址                                                         |
+| -------- | ------------------------------------------------------------ |
+| 起止节点 | https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg |
+| 常规节点 | https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg |
+| 分叉节点 | https://gw.alipayobjects.com/zos/rmsportal/SnWIktArriZRWdGCnGfK.svg |
+| 模型节点 | https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg |
+
+## 示例
+
+```html
+<div id="itempannel">
+  <div
+    class="getItem"
+    data-type="node"
+    data-shape="flow-rect"
+    data-size="120*48"
+    data-label="常规节点"
+    data-color="#1890FF"
+  >
+    <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg" />
+  </div>
+  <div
+    class="getItem"
+    data-type="node"
+    data-shape="flow-circle"
+    data-size="72*72"
+    data-label="起止节点"
+    data-color="#FA8C16"
+  >
+    <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg" />
+  </div>
+  <div
+    class="getItem"
+    data-type="node"
+    data-shape="flow-rhombus"
+    data-size="80*72"
+    data-label="分叉节点"
+    data-color="#13C2C2"
+  >
+    <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/SnWIktArriZRWdGCnGfK.svg" />
+  </div>
+  <div
+    class="getItem"
+    data-type="node"
+    data-shape="flow-capsule"
+    data-size="80*48"
+    data-label="模型节点"
+    data-color="#722ED1"
+  >
+    <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg" />
+  </div>
+</div>
+```
+
+## 注意
+
+### class 名称
+
+以上示例中的 class 名称，不可删除，不可用其他 class 替换，否则会出现无法将元素拖拽入画板的情况。
+
+### data-* 属性
+
+元素标签中，所有带有 * 属性都会被添加进节点的数据模型。
+
+熟悉G6的同学可能秒懂，但如果不清楚什么意思也没关系，后续操作中你就会发现其联系。
+
+### img
+
+元素图片必须设置为禁止拖拽，draggable="false"，否则拖拽到画板后，需要二次点击才会取消元素选中状态。
+
+# 画布
+
+## 示例
+
+```html
+<div id="page"></div>
+```
+
+## 注意
+
+### id
+
+画布标签的 id 必须为 page，否则控制台会报错，原因不明，错误如下：
+
+![image-20200402182150873](g6-editor.assets/image-20200402182150873.png)
+
+### 高度
+
+必须为其设定高度
+
+
+
+# 节点
+
+
+
+
+
 # 事件
 
 根据官网文档，事件包括鼠标事件、编辑器事件、数据变更事件、状态变更事件、控制事件这几类，官方文档仅仅只是做了模糊概括，并未详细列出有哪些事件。
@@ -11,54 +123,56 @@
 > const editor = new G6Editor();
 >
 > const page = editor.getCurrentPage()
+>
+> // 下表中，节点和边，一并简称为对象
 
-| 事件                       | 备注 | 提供者        |
-| -------------------------- | ---- | ------------- |
-| aftercommandexecute        |      | editor 编辑器 |
-| beforecommandexecute       |      | editor 编辑器 |
-|                            |      |               |
-| afterchange                |      | page 画布     |
-| afterdelete                |      | page 画布     |
-| afteritemactived           |      | page 画布     |
-| afteritemselected          |      | page 画布     |
-| afteritemunactived         |      | page 画布     |
-| afteritemunselected        |      | page 画布     |
-| anchor:mousedown           |      | page 画布     |
-| anchor:mouseenter          |      | page 画布     |
-| anchor:mouseleave          |      | page 画布     |
-| anchor:mouseup             |      | page 画布     |
-| beforechange               |      | page 画布     |
-| beforeitemactived          |      | page 画布     |
-| beforeitemselected         |      | page 画布     |
-| beforeitemunactived        |      | page 画布     |
-| beforeitemunselected       |      | page 画布     |
-| click                      |      | page 画布     |
-| contextmenu                |      | page 画布     |
-| dragedge:beforeshowanchor  |      | page 画布     |
-| edge:mouseenter            |      | page 画布     |
-| edge:mouseleave            |      | page 画布     |
-| hoveranchor:beforeaddedge  |      | page 画布     |
-| hovernode:beforeshowanchor |      | page 画布     |
-| keyup                      |      | page 画布     |
-| mousedown                  |      | page 画布     |
-| mouseenter                 |      | page 画布     |
-| mouseleave                 |      | page 画布     |
-| mouseup                    |      | page 画布     |
-| node:click                 |      | page 画布     |
-| node:mousedown             |      | page 画布     |
-| node:mouseenter            |      | page 画布     |
-| node:mouseleave            |      | page 画布     |
-| node:mouseup               |      | page 画布     |
-| statuschange               |      | page 画布     |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
-|                            |      |               |
+| 事件                       | 备注       | 提供者        |
+| -------------------------- | ---------- | ------------- |
+| aftercommandexecute        |            | editor 编辑器 |
+| beforecommandexecute       |            | editor 编辑器 |
+|                            |            |               |
+| afterchange                | 改变后     | page 画布     |
+| afterdelete                | 删除后     | page 画布     |
+| afteritemactived           |            | page 画布     |
+| afteritemselected          | 选择对象后 | page 画布     |
+| afteritemunactived         | 取消激活后 | page 画布     |
+| afteritemunselected        |            | page 画布     |
+| anchor:mousedown           |            | page 画布     |
+| anchor:mouseenter          |            | page 画布     |
+| anchor:mouseleave          |            | page 画布     |
+| anchor:mouseup             |            | page 画布     |
+| beforechange               |            | page 画布     |
+| beforeitemactived          |            | page 画布     |
+| beforeitemselected         |            | page 画布     |
+| beforeitemunactived        |            | page 画布     |
+| beforeitemunselected       |            | page 画布     |
+| click                      |            | page 画布     |
+| contextmenu                |            | page 画布     |
+| dragedge:beforeshowanchor  |            | page 画布     |
+| edge:mouseenter            |            | page 画布     |
+| edge:mouseleave            |            | page 画布     |
+| hoveranchor:beforeaddedge  |            | page 画布     |
+| hovernode:beforeshowanchor |            | page 画布     |
+| keyup                      |            | page 画布     |
+| mousedown                  |            | page 画布     |
+| mouseenter                 |            | page 画布     |
+| mouseleave                 |            | page 画布     |
+| mouseup                    |            | page 画布     |
+| node:click                 |            | page 画布     |
+| node:mousedown             |            | page 画布     |
+| node:mouseenter            |            | page 画布     |
+| node:mouseleave            |            | page 画布     |
+| node:mouseup               |            | page 画布     |
+| statuschange               |            | page 画布     |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
+|                            |            |               |
 
 
 
