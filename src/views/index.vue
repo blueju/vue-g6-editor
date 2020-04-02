@@ -21,7 +21,10 @@
           <i data-command="selectAll" class="command fa fa-check-square-o" title="全选"></i>
           <i data-command="copy" class="command fa fa-files-o" title="复制"></i>
           <i data-command="paste" class="command fa fa-clipboard" title="粘贴"></i>
-          <i data-command="autoZoom" class="command fa fa-clipboard" title="粘贴"></i>
+          <i data-command="autoZoom" class="command fa fa-expand" title="实际大小"></i>
+          <i data-command="resetZoom" class="command fa fa-compress" title="适应页面"></i>
+          <i data-command="addGroup" class="command fa fa-object-group" title="组合"></i>
+          <i data-command="unGroup" class="command fa fa-object-ungroup" title="取消组合"></i>
         </div>
       </el-col>
     </el-row>
@@ -162,10 +165,8 @@ export default {
       // SVG节点图片URL地址
       startNodeSVGUrl: require("../assets/start-node.svg"),
       endNodeSVGUrl: require("../assets/end-node.svg"),
-      regularNodeSVGUrl:
-        "https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg",
-      conditionNodeSVGUrl:
-        "https://gw.alipayobjects.com/zos/rmsportal/SnWIktArriZRWdGCnGfK.svg",
+      regularNodeSVGUrl: require("../assets/regular-node.svg"),
+      conditionNodeSVGUrl: require("../assets/condition-node.svg"),
       modelNodeSVGUrl:
         "https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg",
       // 编辑器

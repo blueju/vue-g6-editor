@@ -1,0 +1,18 @@
+<svg width="80" height="49" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="82" height="51" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_4" width="80" height="400" x="3" y="3" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="141.5" cy="168.4375" id="svg_2"/>
+  <rect rx="4" stroke="#5bb1ff" 高度="48" 宽度="78" id="svg_7" height="48.227116" width="79.60015" y="0.56203" x="0.26445" stroke-width="NaN" fill="#e8f8ff"/>
+  <rect id="svg_8" height="0" width="2.400004" y="52.175019" x="95.400098" fill-opacity="null" stroke-opacity="null" stroke-width="null" stroke="#5cdbd3" fill="#e8fffb"/>
+  <text xml:space="preserve" text-anchor="start" font-family="'Courier New', Courier, monospace" font-size="13" id="svg_9" y="28.056967" x="14.021708" stroke-width="0" stroke="#5bb1ff" fill="#000000">常规节点</text>
+ </g>
+</svg>
