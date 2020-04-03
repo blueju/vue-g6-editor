@@ -10,6 +10,7 @@
       <el-col :span="24">
         <div id="toolbar">
           <i data-command="save" class="command fa fa-floppy-o" title="保存"></i>
+          <i @click="openSaveAsImageDialog" class="fa fa-picture-o" title="保存为图片"></i>
           <i data-command="undo" class="command fa fa-undo" title="撤销"></i>
           <i data-command="redo" class="command fa fa-repeat" title="重做"></i>
           <i data-command="delete" class="command fa fa-trash-o" title="删除"></i>
@@ -28,8 +29,9 @@
         </div>
       </el-col>
     </el-row>
-    <!-- 元素面板 + 主画布 +  -->
+    <!-- 元素面板 + 画布 + 属性栏 -->
     <el-row>
+      <!-- 元素面板 -->
       <el-col :span="3">
         <div id="itempannel">
           <!-- 开始节点 -->
@@ -84,14 +86,13 @@
           </div>
         </div>
       </el-col>
-
+      <!-- 画布 -->
       <el-col :span="17">
         <el-col :span="24">
           <div id="page"></div>
         </el-col>
-        <!-- <el-button type="primary" data-command="save" @click="saveGraph" class="command">确认</el-button> -->
       </el-col>
-
+      <!-- 属性栏 -->
       <el-col :span="4">
         <div id="detailpannel">
           <!-- 节点属性栏 -->
@@ -100,16 +101,28 @@
             <div class="main">
               <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
                 <el-form-item label="节点文本">
-                  <el-input v-model="nodeAttributeForm.label" @change="saveNodeAttribute"></el-input>
+                  <el-input
+                    v-model="nodeAttributeForm.label"
+                    @change="saveNodeAttribute"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="宽度">
-                  <el-input v-model="nodeAttributeForm.width" @change="saveNodeAttribute"></el-input>
+                  <el-input
+                    v-model="nodeAttributeForm.width"
+                    @change="saveNodeAttribute"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="高度">
-                  <el-input v-model="nodeAttributeForm.height" @change="saveNodeAttribute"></el-input>
+                  <el-input
+                    v-model="nodeAttributeForm.height"
+                    @change="saveNodeAttribute"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="颜色">
-                  <el-color-picker v-model="nodeAttributeForm.color" @change="saveNodeAttribute"></el-color-picker>
+                  <el-color-picker
+                    v-model="nodeAttributeForm.color"
+                    @change="saveNodeAttribute"
+                  ></el-color-picker>
                 </el-form-item>
               </el-form>
             </div>
@@ -120,7 +133,10 @@
             <div class="main">
               <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
                 <el-form-item label="边文本">
-                  <el-input v-model="edgeAttributeForm.label" @change="saveEdgeAttribute"></el-input>
+                  <el-input
+                    v-model="edgeAttributeForm.label"
+                    @change="saveEdgeAttribute"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="边文本">
                   <el-select v-model="edgeAttributeForm.shape" @change="saveEdgeAttribute">
@@ -138,6 +154,32 @@
         </div>
       </el-col>
     </el-row>
+    <!-- 弹窗 -->
+    <article>
+      <!-- 下载图片 -->
+      <section>
+        <el-dialog title="下载图片" :visible.sync="saveAsImageDialogVisible" width="30%">
+          <el-form label-width="100px" label-position="top">
+            <el-form-item label="选择图片格式">
+              <el-select v-model="saveAsImageFormat">
+                <el-option label="jpg" value="jpg">
+                  <span style="float: left">jpg</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">白色背景</span>
+                </el-option>
+                <el-option label="png" value="png">
+                  <span style="float: left">png</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">透明背景</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <span slot="footer">
+            <el-button @click="saveAsImageDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="saveAsImage">确 定</el-button>
+          </span>
+        </el-dialog>
+      </section>
+    </article>
   </div>
 </template>
 <script>
@@ -167,12 +209,11 @@ export default {
       endNodeSVGUrl: require("../assets/end-node.svg"),
       regularNodeSVGUrl: require("../assets/regular-node.svg"),
       conditionNodeSVGUrl: require("../assets/condition-node.svg"),
-      modelNodeSVGUrl:
-        "https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg",
+      modelNodeSVGUrl: "https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg",
       // 编辑器
       editor: null,
-      // 画布
-      page: null,
+      saveAsImageDialogVisible: false,
+      saveAsImageFormat: "jpg"
     };
   },
   mounted() {
@@ -184,7 +225,7 @@ export default {
     initG6Editor() {
       const _this = this;
       const editor = new G6Editor();
-      this.editor = editor
+      this.editor = editor;
 
       const Command = G6Editor.Command;
       // 注册新命令save
@@ -192,8 +233,8 @@ export default {
         // 禁止保存命令进入队列
         queue: false,
         // 命令是否可用
-        enable: function (editor) {
-          return true
+        enable: function(editor) {
+          return true;
         },
         // 正向命令
         execute(editor) {
@@ -206,14 +247,17 @@ export default {
           console.log(editor);
         },
         // 快捷键：Ctrl + S
-        shortcutCodes: [["metaKey", "s"], ["ctrlKey", "s"]]
+        shortcutCodes: [
+          ["metaKey", "s"],
+          ["ctrlKey", "s"]
+        ]
       });
       // 主画布
       const Flow = G6Editor.Flow;
       const flow = new G6Editor.Flow({
         graph: {
           container: "page"
-        },
+        }
         // shortcut: {
         //   zoomIn: true, // 开启放大快捷键
         //   zoomOut: true, // 开启视口缩小快捷键
@@ -257,12 +301,8 @@ export default {
           this.edgeAttributeBarVisible = false;
           this.nodeAttributeBarVisible = true;
           this.nodeAttributeForm.label = selectedItemDataModel.label;
-          this.nodeAttributeForm.width = selectedItemDataModel.size.split(
-            "*"
-          )[0];
-          this.nodeAttributeForm.height = selectedItemDataModel.size.split(
-            "*"
-          )[1];
+          this.nodeAttributeForm.width = selectedItemDataModel.size.split("*")[0];
+          this.nodeAttributeForm.height = selectedItemDataModel.size.split("*")[1];
           this.nodeAttributeForm.color = selectedItemDataModel.color;
         }
         // 如果选择的对象是边
@@ -278,6 +318,35 @@ export default {
         this.nodeAttributeBarVisible = false;
         this.edgeAttributeBarVisible = false;
       });
+    },
+    // 打开保存为图片弹窗
+    openSaveAsImageDialog() {
+      this.saveAsImageDialogVisible = true;
+    },
+    // 保存为图片
+    saveAsImage() {
+      let newCanvas;
+      if (this.saveAsImageFormat === "jpg") {
+        let canvas = this.editor.getCurrentPage().saveImage();
+        newCanvas = document.createElement("canvas");
+        newCanvas.width = canvas.width;
+        newCanvas.height = canvas.height;
+        let newContext = newCanvas.getContext("2d");
+        newContext.fillStyle = "#fff";
+        newContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
+        newContext.drawImage(canvas, 0, 0);
+      }
+      if (this.saveAsImageFormat === "png") {
+        newCanvas = this.editor.getCurrentPage().saveImage();
+      }
+      let imageDataURL = newCanvas.toDataURL();
+      let downloadLink = document.createElement("a");
+      downloadLink.download = "图片.jpg";
+      downloadLink.href = imageDataURL;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      this.saveAsImageDialogVisible = false;
     }
   }
 };
