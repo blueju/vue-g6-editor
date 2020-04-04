@@ -240,7 +240,7 @@ export default {
         },
         // 正向命令
         execute(editor) {
-          let needSaveData = this.editor.getCurrentPage().save();
+          let needSaveData = editor.getCurrentPage().save();
           localStorage.setItem("flowData", JSON.stringify(needSaveData));
           _this.$message.success("数据已保存");
         },
@@ -256,7 +256,6 @@ export default {
         ]
       });
       // 画布
-      const Flow = G6Editor.Flow;
       const flow = new G6Editor.Flow({
         graph: {
           container: "page"
@@ -289,10 +288,24 @@ export default {
       editor.add(itempannel);
       editor.add(toolbar);
       editor.add(detailpannel);
+      // 挂载到window，方便调试
       window.editor = editor;
 
       // 获取当前画布
       const currentPage = editor.getCurrentPage();
+      currentPage.on("afterchange", (e) => {
+        if (e.action === "add") {
+          if (e.model.nodetype === "startNode" || e.model.nodetype === "endNode") {
+            let nodes = this.editor.getCurrentPage().getNodes();
+            for (const item of nodes) {
+              if (item.model.nodetype === e.model.nodetype && item.model.id !== e.model.id) {
+                this.editor.getCurrentPage().remove(e.item);
+                this.$message.warning("只能有一个开始节点或结束节点");
+              }
+            }
+          }
+        }
+      });
       // 监听（选择对象后）事件
       currentPage.on("afteritemselected", (ev) => {
         console.log("打印所选对象属性", ev.item);
