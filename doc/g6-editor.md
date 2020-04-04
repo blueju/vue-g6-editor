@@ -505,10 +505,14 @@ Command.registerCommand("save", {
     return true;
   },
   // 正向命令
-  execute(eidtor) {
+  execute(editor) {
     ...
   },
-  // 快捷键：Ctrl+shirt+s
+  // 反向命令
+  back(editor) {
+    ...
+  },
+  // 快捷键：Ctrl + Shirt + S
   shortcutCodes: [["ctrlKey", "shiftKey", "s"]]
 });
 
@@ -516,13 +520,15 @@ Command.registerCommand("save", {
 
 #### 方案二
 
-当然我们有另外一种方式，即给保存图标添加点击事件，在方法中执行 editor.getCurrentPage().save() 方法。
+当然我们有另外一种方式，即给保存图标添加点击事件，在方法中执行自己需要的处理逻辑。
 
 #### 注意
 
 注册的自定义命令中，即便你设置了快捷键，但还是默认不启用的。
 
 如果需要启用，需要按如下设置进行开启。
+
+由于我本人使用的 Flow 流程图，所以在 Flow 中设置开启，如果你使用的是 MindMap 脑图，则可能在 new G6Editor.MindMap({}) 中设置开启。
 
 ```javascript
 const flow = new G6Editor.Flow({
