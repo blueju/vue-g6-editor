@@ -4,7 +4,7 @@
 
 因本人仍在开发及探索中，目前此文档的层级结构尚未确定，只能是碰到什么便整理总结什么。
 
-如项目不出意外仍在手的话，文档将继续更新至完整。
+Github：https://github.com/blueju/vue-g6-editor
 
 
 
@@ -288,19 +288,19 @@ const editor = new G6Editor();
 >
 > 除下表方法以外，还有一些方法，但均以 _ 开头，可能为私有方法用得少，下表不再列举，想看的可在控制台自行查看。
 
-| 方法                | 名称     |      |
-| ------------------- | -------- | ---- |
-| add                 | 添加组件 |      |
-| commandEnable       |          |      |
-| destroy             |          |      |
-| executeCommand      |          |      |
-| getCommands         |          |      |
-| getComponents       |          |      |
-| getComponentsByType |          |      |
-| getCurrentCommand   |          |      |
-| getCurrentPage      |          |      |
-| getDefaultCfg       |          |      |
-| setCommandDOMenable |          |      |
+| 方法                | 名称       | 备注                                                      |
+| ------------------- | ---------- | --------------------------------------------------------- |
+| add                 | 添加组件   |                                                           |
+| commandEnable       |            |                                                           |
+| destroy             | 销毁编辑器 |                                                           |
+| executeCommand      | 执行命令   | 通过此方法执行的操作，均会进入队列，可撤销/重做，建议使用 |
+| getCommands         |            |                                                           |
+| getComponents       |            |                                                           |
+| getComponentsByType |            |                                                           |
+| getCurrentCommand   |            |                                                           |
+| getCurrentPage      |            |                                                           |
+| getDefaultCfg       |            |                                                           |
+| setCommandDOMenable |            |                                                           |
 
 > 
 
@@ -320,55 +320,54 @@ const editor = new G6Editor();
 >
 > const page = editor.getCurrentPage()
 >
-> // 下表中，节点和边，一并简称为对象
+> // 下表中，节点、边等，一并简称为元素
 
-| 事件                       | 备注       | 提供者        |
-| -------------------------- | ---------- | ------------- |
-| aftercommandexecute        |            | editor 编辑器 |
-| beforecommandexecute       |            | editor 编辑器 |
-|                            |            |               |
-| afterchange                | 改变后     | page 画布     |
-| afterdelete                | 删除后     | page 画布     |
-| afteritemactived           |            | page 画布     |
-| afteritemselected          | 选择对象后 | page 画布     |
-| afteritemunactived         | 取消激活后 | page 画布     |
-| afteritemunselected        |            | page 画布     |
-| anchor:mousedown           |            | page 画布     |
-| anchor:mouseenter          |            | page 画布     |
-| anchor:mouseleave          |            | page 画布     |
-| anchor:mouseup             |            | page 画布     |
-| beforechange               |            | page 画布     |
-| beforeitemactived          |            | page 画布     |
-| beforeitemselected         |            | page 画布     |
-| beforeitemunactived        |            | page 画布     |
-| beforeitemunselected       |            | page 画布     |
-| click                      |            | page 画布     |
-| contextmenu                |            | page 画布     |
-| dragedge:beforeshowanchor  |            | page 画布     |
-| edge:mouseenter            |            | page 画布     |
-| edge:mouseleave            |            | page 画布     |
-| hoveranchor:beforeaddedge  |            | page 画布     |
-| hovernode:beforeshowanchor |            | page 画布     |
-| keyup                      |            | page 画布     |
-| mousedown                  |            | page 画布     |
-| mouseenter                 |            | page 画布     |
-| mouseleave                 |            | page 画布     |
-| mouseup                    |            | page 画布     |
-| node:click                 |            | page 画布     |
-| node:mousedown             |            | page 画布     |
-| node:mouseenter            |            | page 画布     |
-| node:mouseleave            |            | page 画布     |
-| node:mouseup               |            | page 画布     |
-| statuschange               |            | page 画布     |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
-|                            |            |               |
+| 事件                       | 触发时机               | 备注 | 提供者        |
+| -------------------------- | ---------------------- | ---- | ------------- |
+| aftercommandexecute        | 命令执行后             |      | editor 编辑器 |
+| beforecommandexecute       | 命令执行前             |      | editor 编辑器 |
+| afterchange                | 任何改变发生后         |      | page 画布     |
+| afterdelete                | 删除元素后             |      | page 画布     |
+| afteritemactived           |                        |      | page 画布     |
+| afteritemselected          | 选择元素后             |      | page 画布     |
+| afteritemunactived         |                        |      | page 画布     |
+| afteritemunselected        | 已选中元素被取消选中后 |      | page 画布     |
+| anchor:mousedown           |                        |      | page 画布     |
+| anchor:mouseenter          |                        |      | page 画布     |
+| anchor:mouseleave          |                        |      | page 画布     |
+| anchor:mouseup             |                        |      | page 画布     |
+| beforechange               | 任何改变发生前         |      | page 画布     |
+| beforeitemactived          |                        |      | page 画布     |
+| beforeitemselected         |                        |      | page 画布     |
+| beforeitemunactived        |                        |      | page 画布     |
+| beforeitemunselected       |                        |      | page 画布     |
+| click                      |                        |      | page 画布     |
+| contextmenu                |                        |      | page 画布     |
+| dragedge:beforeshowanchor  |                        |      | page 画布     |
+| edge:mouseenter            |                        |      | page 画布     |
+| edge:mouseleave            |                        |      | page 画布     |
+| hoveranchor:beforeaddedge  |                        |      | page 画布     |
+| hovernode:beforeshowanchor |                        |      | page 画布     |
+| keyup                      |                        |      | page 画布     |
+| mousedown                  |                        |      | page 画布     |
+| mouseenter                 |                        |      | page 画布     |
+| mouseleave                 |                        |      | page 画布     |
+| mouseup                    |                        |      | page 画布     |
+| node:click                 |                        |      | page 画布     |
+| node:mousedown             |                        |      | page 画布     |
+| node:mouseenter            |                        |      | page 画布     |
+| node:mouseleave            |                        |      | page 画布     |
+| node:mouseup               |                        |      | page 画布     |
+| statuschange               |                        |      | page 画布     |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
+|                            |                        |      |               |
 
 
 
