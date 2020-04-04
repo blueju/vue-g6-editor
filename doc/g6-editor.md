@@ -254,13 +254,52 @@ HTML层面仅以下代码即可，JS层面 g6-editor 会自动往其中填入我
 <div id="minimap"></div>
 ```
 
+## 右键菜单
+
+HTML层面仅以下代码即可，我们仅需要再加点样式使其美观即可。JS层面 g6-editor 会自动在不同状态下控制它们的显示隐藏状态。
+
+### 示例
+
+```html
+<div id="contextmenu">
+  <div data-status="node-selected" class="menu">
+    <button data-command="copy" class="command">复制</button>
+    <button data-command="paste" class="command">粘贴</button>
+    <button data-command="delete" class="command">删除</button>
+  </div>
+  <div data-status="edge-selected" class="menu">
+    <button data-command="delete" class="command">删除</button>
+  </div>
+  <div data-status="group-selected" class="menu">
+    <button data-command="copy" class="command">复制</button>
+    <button data-command="paste" class="command">粘贴</button>
+    <button data-command="unGroup" class="command">取消组合</button>
+    <button data-command="delete" class="command">删除</button>
+  </div>
+  <div data-status="canvas-selected" class="menu">
+    <button data-command="undo" class="command">撤销</button>
+    <button data-command="redo" class="command disable">重做</button>
+  </div>
+  <div data-status="multi-selected" class="menu">
+    <button data-command="copy" class="command">复制</button>
+    <button data-command="paste" class="command">粘贴</button>
+    <button data-command="addGroup" class="command">组合</button>
+  </div>
+</div>
+```
+
+### 注意
+
+- 状态改变对应的事件是 statuschange，如果你绑定了 statuschange 事件，你可以在控制台中打印查看当前是什么状态。
+
+- 以下示例代码已是最简，建议直接复用，data-status="<u>status</u>"、class="menu" 和 class="command" 均不可删除，否则会出现问题。
+- 右键菜单一般只有在我们点击右键的时候才出现，但 g6-editor 默认右键菜单一开始就是显示的，这就显得非常不合理。因此我们需要手动在CSS中先给它设置一个 display:none，对右键菜单进行隐藏。
+
 
 
 # JavaScript
 
 该目录主要整理 g6-editor 在 JS 层面的术语解释、使用规范、示例和注意点。
-
-
 
 ## 关闭体验改进计划打点请求
 
@@ -272,13 +311,21 @@ HTML层面仅以下代码即可，JS层面 g6-editor 会自动往其中填入我
 G6Editor.track(false)
 ```
 
+## 组件
+
+### 右键菜单
+
+右键菜单类，负责处理右键菜单的显示隐藏、命令绑定、可⽤禁⽤状态控制。
 
 
-## 缩略图
 
-缩略图，负责绘制缩略图及双图联动。
 
-### 初始化
+
+### 缩略图
+
+缩略图类，负责绘制缩略图及双图联动。
+
+#### 初始化
 
 ```javascript
 const minimap = new G6Editor.Minimap({
