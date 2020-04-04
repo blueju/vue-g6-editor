@@ -10,7 +10,10 @@
       <el-col :span="24">
         <div id="toolbar">
           <i data-command="save" class="command fa fa-floppy-o" title="保存"></i>
-          <i class="fa fa-picture-o" title="保存为图片" @click="openSaveAsImageDialog"></i>
+          <i class="fa fa-history" title="历史数据" @click="readHistoryData"></i>
+          <i class="fa fa-hdd-o" title="上传数据" @click="readUploadData"></i>
+          <i class="fa fa-download" title="另存为文件" @click="saveAsFile"></i>
+          <i class="fa fa-picture-o" title="另存为图片" @click="openSaveAsImageDialog"></i>
           <i data-command="undo" class="command fa fa-undo" title="撤销"></i>
           <i data-command="redo" class="command fa fa-repeat" title="重做"></i>
           <i data-command="delete" class="command fa fa-trash-o" title="删除"></i>
@@ -365,6 +368,48 @@ export default {
       downloadLink.click();
       document.body.removeChild(downloadLink);
       this.saveAsImageDialogVisible = false;
+    },
+    // 保存为文件
+    saveAsFile() {
+      let jsonString = JSON.stringify(this.editor.getCurrentPage().save());
+      let blob = new Blob([jsonString]);
+      let blobURL = URL.createObjectURL(blob);
+      let downloadLink = document.createElement("a");
+      downloadLink.download = "数据.json";
+      downloadLink.href = blobURL;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      URL.revokeObjectURL(blobURL);
+      document.body.removeChild(downloadLink);
+    },
+    // 读取历史数据
+    readHistoryData() {
+      let stringData = localStorage.getItem("flowData");
+      if (stringData === "" || stringData === "{}" || stringData === null) {
+        this.$message.warning("无历史数据");
+        return;
+      }
+      let jsonData = JSON.parse(stringData);
+      this.editor.getCurrentPage().read(jsonData);
+    },
+    // 读取上传数据
+    readUploadData() {
+      let uploadButton = document.createElement("input");
+      uploadButton.setAttribute("type", "file");
+      uploadButton.setAttribute("accept", ".json");
+      uploadButton.addEventListener("change", (e) => {
+        console.dir(uploadButton);
+        let file = uploadButton.files[0];
+        let fileReader = new FileReader();
+        fileReader.onload = (event) => {
+          console.log(event);
+          let text = JSON.parse(event.target.result);
+          console.log(text);
+          this.editor.getCurrentPage().read(text);
+        };
+        fileReader.readAsText(file);
+      });
+      uploadButton.click();
     }
   }
 };
