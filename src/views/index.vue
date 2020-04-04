@@ -10,7 +10,7 @@
       <el-col :span="24">
         <div id="toolbar">
           <i data-command="save" class="command fa fa-floppy-o" title="保存"></i>
-          <i @click="openSaveAsImageDialog" class="fa fa-picture-o" title="保存为图片"></i>
+          <i class="fa fa-picture-o" title="保存为图片" @click="openSaveAsImageDialog"></i>
           <i data-command="undo" class="command fa fa-undo" title="撤销"></i>
           <i data-command="redo" class="command fa fa-repeat" title="重做"></i>
           <i data-command="delete" class="command fa fa-trash-o" title="删除"></i>
@@ -32,7 +32,7 @@
     <!-- 元素面板 + 画布 + 属性栏 -->
     <el-row>
       <!-- 元素面板 -->
-      <el-col :span="3">
+      <el-col :span="2">
         <div id="itempannel">
           <!-- 开始节点 -->
           <div
@@ -43,6 +43,7 @@
             data-size="72*72"
             data-label="开始节点"
             data-color="#FA8C16"
+            data-nodeType="startNode"
           >
             <img draggable="false" :src="startNodeSVGUrl" alt srcset />
           </div>
@@ -81,13 +82,14 @@
             data-size="80*80"
             data-label="结束节点"
             data-color="#FA8C16"
+            data-nodeType="endNode"
           >
             <img draggable="false" :src="endNodeSVGUrl" />
           </div>
         </div>
       </el-col>
       <!-- 画布 -->
-      <el-col :span="17">
+      <el-col :span="18">
         <el-col :span="24">
           <div id="page"></div>
         </el-col>
@@ -96,7 +98,7 @@
       <el-col :span="4">
         <div id="detailpannel">
           <!-- 节点属性栏 -->
-          <div id="nodeAttributeBar" v-if="nodeAttributeBarVisible" data-status="node-selected">
+          <div v-if="nodeAttributeBarVisible" id="nodeAttributeBar" data-status="node-selected">
             <div class="title">节点属性</div>
             <div class="main">
               <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
@@ -128,7 +130,7 @@
             </div>
           </div>
           <!-- 边属性栏 -->
-          <div id="edgeAttributeBar" v-if="edgeAttributeBarVisible" data-status="edge-selected">
+          <div v-if="edgeAttributeBarVisible" id="edgeAttributeBar" data-status="edge-selected">
             <div class="title">边属性</div>
             <div class="main">
               <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
@@ -157,18 +159,18 @@
     <!-- 弹窗 -->
     <article>
       <!-- 下载图片 -->
-      <section>
-        <el-dialog title="下载图片" :visible.sync="saveAsImageDialogVisible" width="30%">
+      <section class="save-as-image-dialog">
+        <el-dialog title="下载图片" :visible.sync="saveAsImageDialogVisible" width="360px">
           <el-form label-width="100px" label-position="top">
             <el-form-item label="选择图片格式">
               <el-select v-model="saveAsImageFormat">
                 <el-option label="jpg" value="jpg">
-                  <span style="float: left">jpg</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">白色背景</span>
+                  <span style="float: left;">jpg</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px;">白色背景</span>
                 </el-option>
                 <el-option label="png" value="png">
-                  <span style="float: left">png</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">透明背景</span>
+                  <span style="float: left;">png</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px;">透明背景</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -186,7 +188,7 @@
 import G6Editor from "@antv/g6-editor";
 import mixin from "./mixin";
 export default {
-  name: "vue-g6-editor",
+  name: "VueG6Editor",
   mixins: [mixin],
   data() {
     return {
@@ -226,20 +228,21 @@ export default {
       const _this = this;
       const editor = new G6Editor();
       this.editor = editor;
-
+      G6Editor.track(false);
       const Command = G6Editor.Command;
       // 注册新命令save
       Command.registerCommand("save", {
         // 禁止保存命令进入队列
         queue: false,
         // 命令是否可用
-        enable: function(editor) {
+        enable: (editor) => {
           return true;
         },
         // 正向命令
         execute(editor) {
-          console.log("保存命令");
-          console.log(editor);
+          let needSaveData = this.editor.getCurrentPage().save();
+          localStorage.setItem("flowData", JSON.stringify(needSaveData));
+          _this.$message.success("数据已保存");
         },
         // 反向命令
         back(editor) {
@@ -252,17 +255,16 @@ export default {
           ["ctrlKey", "s"]
         ]
       });
-      // 主画布
+      // 画布
       const Flow = G6Editor.Flow;
       const flow = new G6Editor.Flow({
         graph: {
           container: "page"
+        },
+        shortcut: {
+          // 开启保存快捷键
+          save: true
         }
-        // shortcut: {
-        //   zoomIn: true, // 开启放大快捷键
-        //   zoomOut: true, // 开启视口缩小快捷键
-        //   save: true
-        // },
       });
 
       // 设置边
@@ -292,7 +294,7 @@ export default {
       // 获取当前画布
       const currentPage = editor.getCurrentPage();
       // 监听（选择对象后）事件
-      currentPage.on("afteritemselected", ev => {
+      currentPage.on("afteritemselected", (ev) => {
         console.log("打印所选对象属性", ev.item);
         console.log("打印所选对象数据模型", ev.item.model);
         const selectedItemDataModel = ev.item.model;
@@ -307,6 +309,9 @@ export default {
         }
         // 如果选择的对象是边
         if (ev.item.isEdge) {
+          ev.item.graph.edge({
+            shape: "flow-polyline-round"
+          });
           this.nodeAttributeBarVisible = false;
           this.edgeAttributeBarVisible = true;
           this.edgeAttributeForm.label = selectedItemDataModel.label;
@@ -314,7 +319,7 @@ export default {
         }
       });
       // 监听（删除后）事件
-      currentPage.on("afterdelete", ev => {
+      currentPage.on("afterdelete", (ev) => {
         this.nodeAttributeBarVisible = false;
         this.edgeAttributeBarVisible = false;
       });
