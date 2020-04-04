@@ -71,9 +71,10 @@ body {
   }
   // 属性栏
   #detailpannel {
-    height: @pageHeight;
+    height: calc(@pageHeight - 200px);
     background-color: @backgroundColor;
     border-left: 1px solid @borderColor;
+    overflow-y: scroll;
     #nodeAttributeBar,
     #edgeAttributeBar {
       .title {
@@ -91,6 +92,10 @@ body {
         padding: 10px;
       }
     }
+  }
+  // 缩略图
+  #minimap {
+    border: 1px solid #ccc;
   }
   // 下载图片弹窗
   .save-as-image-dialog {

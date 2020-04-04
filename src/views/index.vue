@@ -157,6 +157,8 @@
           <div data-status="canvas-selected">画布属性栏</div>
           <div data-status="multi-selected">多选时属性栏</div>-->
         </div>
+        <!-- 缩略图 -->
+        <div id="minimap"></div>
       </el-col>
     </el-row>
     <!-- 弹窗 -->
@@ -286,11 +288,18 @@ export default {
       const detailpannel = new G6Editor.Detailpannel({
         container: "detailpannel"
       });
+      // 缩略图
+      const minimap = new G6Editor.Minimap({
+        container: "minimap",
+        width: 320,
+        height: 200
+      });
       // 挂载以上组件到Editor
       editor.add(flow);
       editor.add(itempannel);
       editor.add(toolbar);
       editor.add(detailpannel);
+      editor.add(minimap);
       // 挂载到window，方便调试
       window.editor = editor;
 
