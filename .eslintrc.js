@@ -16,5 +16,12 @@ module.exports = {
   },
   rules: {
     // 自定义你的规则
+    // vue文件template、script、style排列顺序
+    "vue/component-tags-order": [
+      "error",
+      {
+        order: ["template", "script", "style"]
+      }
+    ]
   }
 };
