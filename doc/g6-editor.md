@@ -143,7 +143,9 @@ g6-editor的官方文档中，并未提及元素图片，结合搜索引擎，�
 
 #### data-* 属性
 
-元素标签中，所有带有 * 属性都会被添加进节点的数据模型。
+元素标签中，所有带有 * 属性都会被添加进节点的数据模型，data-type除外，因为它是g6-editor设定的保留字段，决定了元素类型，如果你取值为node，则拖出的是节点。
+
+data-size的写法特殊，是长×宽的方式，详见以上示例，data-size的大小决定了其被拖入画布后的大小。
 
 以上示例中 HTML代码 和 data-* 属性，已是本人在保证语义化和无bug出现情况下的最精简版本，可直接复制使用。
 
@@ -246,6 +248,12 @@ g6-editor的官方文档中，并未提及元素图片，结合搜索引擎，�
 
 ## 缩略图
 
+HTML层面仅以下代码即可，JS层面 g6-editor 会自动往其中填入我们所需的缩略图。
+
+```html
+<div id="minimap"></div>
+```
+
 
 
 # JavaScript
@@ -263,6 +271,62 @@ g6-editor的官方文档中，并未提及元素图片，结合搜索引擎，�
 ```javascript
 G6Editor.track(false)
 ```
+
+
+
+## 缩略图
+
+缩略图，负责绘制缩略图及双图联动。
+
+### 初始化
+
+```javascript
+const minimap = new G6Editor.Minimap({
+	// 配置项
+	container: "minimap",
+	width: 320,
+	height: 200
+    ...
+})
+```
+
+#### 配置项
+
+- container
+
+  > 必填		object / string
+  >
+  > 缩略图HTML标签的DOM对象或者ID
+
+- width
+
+  > 必填		number
+  >
+  > 宽度
+
+- height
+
+  > 必填		number
+  >
+  > 高度
+
+- viewportWindowStyle
+
+  > 选填		object
+  >
+  > 缩略图可视区域视窗样式
+  >
+  > 参考 [G/G2 绘图属性](https://g2.antv.vision/zh/docs/manual/shape-attrs#gatsby-focus-wrapper)（官方文档中的链接已经404，这是我根据一些关键词找到，属性应该对的上）
+
+- viewportBackStyle
+
+  > 选填		object
+  >
+  > 缩略图可视区域视窗样式
+  >
+  > 参考 [G/G2 绘图属性](https://g2.antv.vision/zh/docs/manual/shape-attrs#gatsby-focus-wrapper)（官方文档中的链接已经404，这是我根据一些关键词找到，属性应该对的上）
+
+
 
 
 
@@ -394,6 +458,12 @@ console.log(events);
 ## 方法
 
 方法有很多，我可能没办法将全部都列出来并解释，在实际操作中，更多的是需要大家自己通过在控制台打印的方式，在原型链中查找符合需求的方法。
+
+### 删除元素
+
+remove
+
+
 
 ### 保存数据模型
 
@@ -614,22 +684,22 @@ const flow = new G6Editor.Flow({
 
 #### 内置边列表
 
-|                       |                                                              |
-| --------------------- | ------------------------------------------------------------ |
-| common                | 直线，不带箭头                                               |
-|                       |                                                              |
-| flow-base             | 直线，带箭头                                                 |
-| flow-polyline         | 流程图折线                                                   |
-| flow-polyline-round   | 流程图圆角折线                                               |
-| flow-smooth           | 流程图曲线                                                   |
-|                       |                                                              |
-| diagram-base          | 直线，带箭头。<br />与 flow-base 的区别未知。                |
-|                       |                                                              |
-| page-base             | 仅在源码中发现其被注册为内置边，未实际操作，效果未知。       |
-| mind-placeholder-edge | 弧线，无锚点，线位于节点底部，更适用于思维导图。             |
-| mind-edge             | 弧线，更适用于思维导图脑图。                                 |
-| koni-base             | 拖拽target目标节点时，边会围绕source源节点，自动调整为最近的锚点。<br />直线，带箭头，更适用于⽹络图/拓扑图。 |
-|                       |                                                              |
+| 名称                  | 备注                                       | 适用页面      |
+| --------------------- | ------------------------------------------ | ------------- |
+| common                | 直线，不带箭头                             |               |
+|                       |                                            |               |
+| flow-base             | 直线，带箭头                               | 流程图        |
+| flow-polyline         | 流程图折线                                 | 流程图        |
+| flow-polyline-round   | 流程图圆角折线                             | 流程图        |
+| flow-smooth           | 流程图曲线                                 | 流程图        |
+|                       |                                            |               |
+| diagram-base          | 直线，带箭头<br />与 flow-base 的区别未知  |               |
+|                       |                                            |               |
+| page-base             | 效果未知                                   |               |
+| mind-placeholder-edge | 弧线，无锚点，线位于节点底部               | 思维导图      |
+| mind-edge             | 弧线                                       | 思维导图      |
+| koni-base             | 直线，带箭头<br />会围绕出发点自动调整方向 | ⽹络图/拓扑图 |
+|                       |                                            |               |
 
 #### 内置边的源码对应位置
 
