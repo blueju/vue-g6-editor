@@ -187,6 +187,34 @@
         </el-dialog>
       </section>
     </article>
+    <!-- 右键菜单 -->
+    <section>
+      <div id="contextmenu">
+        <div data-status="node-selected" class="menu">
+          <el-button data-command="copy" class="command">复制</el-button>
+          <el-button data-command="paste" class="command">粘贴</el-button>
+          <el-button data-command="delete" class="command">删除</el-button>
+        </div>
+        <div data-status="edge-selected" class="menu">
+          <el-button data-command="delete" class="command">删除</el-button>
+        </div>
+        <div data-status="group-selected" class="menu">
+          <el-button data-command="copy" class="command">复制</el-button>
+          <el-button data-command="paste" class="command">粘贴</el-button>
+          <el-button data-command="unGroup" class="command">取消组合</el-button>
+          <el-button data-command="delete" class="command">删除</el-button>
+        </div>
+        <div data-status="canvas-selected" class="menu">
+          <el-button data-command="undo" class="command">撤销</el-button>
+          <el-button data-command="redo" class="command disable">重做</el-button>
+        </div>
+        <div data-status="multi-selected" class="menu">
+          <el-button data-command="copy" class="command">复制</el-button>
+          <el-button data-command="paste" class="command">粘贴</el-button>
+          <el-button data-command="addGroup" class="command">组合</el-button>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -294,12 +322,17 @@ export default {
         width: 320,
         height: 200
       });
+      // 右键菜单
+      const contextmenu = new G6Editor.Contextmenu({
+        container: "contextmenu"
+      });
       // 挂载以上组件到Editor
       editor.add(flow);
       editor.add(itempannel);
       editor.add(toolbar);
       editor.add(detailpannel);
       editor.add(minimap);
+      editor.add(contextmenu);
       // 挂载到window，方便调试
       window.editor = editor;
 

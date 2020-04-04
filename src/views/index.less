@@ -97,6 +97,21 @@ body {
   #minimap {
     border: 1px solid #ccc;
   }
+  // 右键菜单
+  #contextmenu {
+    display: none;
+    .menu {
+      width: 56px;
+      /deep/ .el-button {
+        margin-left: 0;
+        border-radius: 0 !important;
+        border-bottom: none;
+        &:nth-last-of-type(1) {
+          border-bottom: 1px solid #dcdfe6;
+        }
+      }
+    }
+  }
   // 下载图片弹窗
   .save-as-image-dialog {
     /deep/ .el-select {
