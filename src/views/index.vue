@@ -101,7 +101,7 @@
       <el-col :span="4">
         <div id="detailpannel">
           <!-- 节点属性栏 -->
-          <div v-if="nodeAttributeBarVisible" id="nodeAttributeBar" data-status="node-selected">
+          <div id="nodeAttributeBar" class="pannel" data-status="node-selected">
             <div class="title">节点属性</div>
             <div class="main">
               <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
@@ -133,7 +133,7 @@
             </div>
           </div>
           <!-- 边属性栏 -->
-          <div v-if="edgeAttributeBarVisible" id="edgeAttributeBar" data-status="edge-selected">
+          <div id="edgeAttributeBar" class="pannel" data-status="edge-selected">
             <div class="title">边属性</div>
             <div class="main">
               <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
@@ -231,14 +231,10 @@ export default {
         width: "",
         height: ""
       },
-      // 节点属性栏是否可见
-      nodeAttributeBarVisible: false,
       // 节点属性表单
       edgeAttributeForm: {
         label: ""
       },
-      // 边属性栏是否可见
-      edgeAttributeBarVisible: false,
       // SVG节点图片URL地址
       startNodeSVGUrl: require("../assets/start-node.svg"),
       endNodeSVGUrl: require("../assets/end-node.svg"),
@@ -358,8 +354,6 @@ export default {
         const selectedItemDataModel = ev.item.model;
         // 如果选择的对象是节点
         if (ev.item.isNode) {
-          this.edgeAttributeBarVisible = false;
-          this.nodeAttributeBarVisible = true;
           this.nodeAttributeForm.label = selectedItemDataModel.label;
           this.nodeAttributeForm.width = selectedItemDataModel.size.split("*")[0];
           this.nodeAttributeForm.height = selectedItemDataModel.size.split("*")[1];
@@ -370,16 +364,12 @@ export default {
           ev.item.graph.edge({
             shape: "flow-polyline-round"
           });
-          this.nodeAttributeBarVisible = false;
-          this.edgeAttributeBarVisible = true;
           this.edgeAttributeForm.label = selectedItemDataModel.label;
           this.edgeAttributeForm.shape = selectedItemDataModel.shape;
         }
       });
       // 监听（删除后）事件
       currentPage.on("afterdelete", (ev) => {
-        this.nodeAttributeBarVisible = false;
-        this.edgeAttributeBarVisible = false;
       });
     },
     // 打开保存为图片弹窗
