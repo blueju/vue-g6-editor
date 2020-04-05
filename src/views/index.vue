@@ -29,6 +29,7 @@
           <i data-command="resetZoom" class="command fa fa-compress" title="适应页面"></i>
           <i data-command="addGroup" class="command fa fa-object-group" title="组合"></i>
           <i data-command="unGroup" class="command fa fa-object-ungroup" title="取消组合"></i>
+          <i data-command="multiSelect" class="command fa fa fa-crop" title="多选"></i>
         </div>
       </el-col>
     </el-row>
@@ -100,74 +101,88 @@
       <!-- 属性栏 -->
       <el-col :span="4">
         <section class="right-part">
-        <div id="detailpannel">
-          <!-- 节点属性栏 -->
-          <div id="nodeAttributeBar" class="pannel" data-status="node-selected">
-            <div class="title">节点属性</div>
-            <div class="main">
-              <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
-                <el-form-item label="节点文本">
-                  <el-input
-                    v-model="nodeAttributeForm.label"
-                    @change="saveNodeAttribute"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="宽度">
-                  <el-input
-                    v-model="nodeAttributeForm.width"
-                    @change="saveNodeAttribute"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="高度">
-                  <el-input
-                    v-model="nodeAttributeForm.height"
-                    @change="saveNodeAttribute"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="颜色">
-                  <el-color-picker
-                    v-model="nodeAttributeForm.color"
-                    @change="saveNodeAttribute"
-                  ></el-color-picker>
-                </el-form-item>
-              </el-form>
+          <div id="detailpannel">
+            <!-- 节点属性栏 -->
+            <div id="nodeAttributeBar" class="pannel" data-status="node-selected">
+              <div class="title">节点属性</div>
+              <div class="main">
+                <el-form :model="nodeAttributeForm" label-position="top" label-width="80px">
+                  <el-form-item label="节点文本">
+                    <el-input
+                      v-model="nodeAttributeForm.label"
+                      @change="saveNodeAttribute"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="宽度">
+                    <el-input
+                      v-model="nodeAttributeForm.width"
+                      @change="saveNodeAttribute"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="高度">
+                    <el-input
+                      v-model="nodeAttributeForm.height"
+                      @change="saveNodeAttribute"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="颜色">
+                    <el-color-picker
+                      v-model="nodeAttributeForm.color"
+                      @change="saveNodeAttribute"
+                    ></el-color-picker>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+            <!-- 边属性栏 -->
+            <div id="edgeAttributeBar" class="pannel" data-status="edge-selected">
+              <div class="title">边属性</div>
+              <div class="main">
+                <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
+                  <el-form-item label="边文本">
+                    <el-input
+                      v-model="edgeAttributeForm.label"
+                      @change="saveEdgeAttribute"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="边文本">
+                    <el-select v-model="edgeAttributeForm.shape" @change="saveEdgeAttribute">
+                      <el-option label="流程图折线" value="flow-polyline"></el-option>
+                      <el-option label="流程图圆⻆折线" value="flow-polyline-round"></el-option>
+                      <el-option label="流程图曲线" value="flow-smooth"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+            <div id="groupAttributeBar" class="pannel" data-status="group-selected">
+              <div class="title">群组属性栏</div>
+            </div>
+            <div id="canvasAttributeBar" class="pannel" data-status="canvas-selected">
+              <div class="title">画布属性栏</div>
+              <div class="main">
+                <el-form label-width="80px" label-position="right">
+                  <el-form-item label="网格对齐">
+                    <el-checkbox v-model="canvasAttributeForm.grid"></el-checkbox>
+                  </el-form-item>
+                  <el-form-item v-if="canvasAttributeForm.grid" label="网格尺寸">
+                    <el-input-number
+                      v-model="canvasAttributeForm.cell"
+                      :min="1"
+                      :max="100"
+                    ></el-input-number>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+            <div id="multiAttributeBar" class="pannel" data-status="multi-selected">
+              <div class="title">多选时属性栏</div>
             </div>
           </div>
-          <!-- 边属性栏 -->
-          <div id="edgeAttributeBar" class="pannel" data-status="edge-selected">
-            <div class="title">边属性</div>
-            <div class="main">
-              <el-form :model="edgeAttributeForm" label-position="top" label-width="80px">
-                <el-form-item label="边文本">
-                  <el-input
-                    v-model="edgeAttributeForm.label"
-                    @change="saveEdgeAttribute"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="边文本">
-                  <el-select v-model="edgeAttributeForm.shape" @change="saveEdgeAttribute">
-                    <el-option label="流程图折线" value="flow-polyline"></el-option>
-                    <el-option label="流程图圆⻆折线" value="flow-polyline-round"></el-option>
-                    <el-option label="流程图曲线" value="flow-smooth"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>
-            </div>
+          <!-- 缩略图 -->
+          <div id="minimap">
+            <div class="title">缩略图</div>
           </div>
-          <div id="groupAttributeBar" class="pannel" data-status="group-selected">
-            <div class="title">群组属性栏</div>
-          </div>
-          <div id="canvasAttributeBar" class="pannel" data-status="canvas-selected">
-            <div class="title">画布属性栏</div>
-          </div>
-          <div id="multiAttributeBar" class="pannel" data-status="multi-selected">
-            <div class="title">多选时属性栏</div>
-          </div>
-        </div>
-        <!-- 缩略图 -->
-        <div id="minimap">
-          <div class="title">缩略图</div>
-        </div>
         </section>
       </el-col>
     </el-row>
@@ -245,6 +260,11 @@ export default {
       edgeAttributeForm: {
         label: ""
       },
+      // 画布属性栏表单
+      canvasAttributeForm: {
+        grid: false,
+        cell: 20
+      },
       // SVG节点图片URL地址
       startNodeSVGUrl: require("../assets/start-node.svg"),
       endNodeSVGUrl: require("../assets/end-node.svg"),
@@ -299,11 +319,26 @@ export default {
         graph: {
           container: "page"
         },
+        align: {
+          line: {
+            // 对齐线颜色
+            stroke: "#FA8C16",
+            // 对齐线粗细
+            lineWidth: 1
+          },
+          // 开启全方位对齐
+          item: true,
+          grid: "cc" // 网格对齐
+        },
+        grid: {
+          // cell: 20 // 网孔尺寸
+        },
         shortcut: {
           // 开启保存快捷键
           save: true
         }
       });
+      window.flow = flow;
 
       // 设置边
       flow.getGraph().edge({
@@ -385,6 +420,7 @@ export default {
     openSaveAsImageDialog() {
       this.saveAsImageDialogVisible = true;
     },
+    //
     // 保存为图片
     saveAsImage() {
       let newCanvas;
