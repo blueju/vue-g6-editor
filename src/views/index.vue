@@ -99,6 +99,7 @@
       </el-col>
       <!-- 属性栏 -->
       <el-col :span="4">
+        <section class="right-part">
         <div id="detailpannel">
           <!-- 节点属性栏 -->
           <div id="nodeAttributeBar" class="pannel" data-status="node-selected">
@@ -153,12 +154,21 @@
               </el-form>
             </div>
           </div>
-          <!-- <div data-status="group-selected">群组属性栏</div>
-          <div data-status="canvas-selected">画布属性栏</div>
-          <div data-status="multi-selected">多选时属性栏</div>-->
+          <div id="groupAttributeBar" class="pannel" data-status="group-selected">
+            <div class="title">群组属性栏</div>
+          </div>
+          <div id="canvasAttributeBar" class="pannel" data-status="canvas-selected">
+            <div class="title">画布属性栏</div>
+          </div>
+          <div id="multiAttributeBar" class="pannel" data-status="multi-selected">
+            <div class="title">多选时属性栏</div>
+          </div>
         </div>
         <!-- 缩略图 -->
-        <div id="minimap"></div>
+        <div id="minimap">
+          <div class="title">缩略图</div>
+        </div>
+        </section>
       </el-col>
     </el-row>
     <!-- 弹窗 -->
@@ -369,8 +379,7 @@ export default {
         }
       });
       // 监听（删除后）事件
-      currentPage.on("afterdelete", (ev) => {
-      });
+      currentPage.on("afterdelete", (ev) => {});
     },
     // 打开保存为图片弹窗
     openSaveAsImageDialog() {

@@ -69,14 +69,25 @@ body {
       width: 100%;
     }
   }
+  // 右侧部分（属性栏 + 缩略图）
+  .right-part{
+    height: @pageHeight;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
   // 属性栏
   #detailpannel {
-    height: calc(@pageHeight - 200px);
+    flex-grow: 1;
+    
     background-color: @backgroundColor;
     border-left: 1px solid @borderColor;
     overflow-y: scroll;
     #nodeAttributeBar,
-    #edgeAttributeBar {
+    #edgeAttributeBar,
+    #groupAttributeBar,
+    #canvasAttributeBar,
+    #multiAttributeBar {
       .title {
         height: 34px;
         line-height: 34px;
@@ -95,7 +106,20 @@ body {
   }
   // 缩略图
   #minimap {
-    border: 1px solid #ccc;
+    background-color: @backgroundColor;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    .title {
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      box-sizing: border-box;
+      font-weight: bold;
+      font-size: 13px;
+      border-width: 0 0 1px 0;
+      border-style: solid;
+      border-color: @borderColor;
+    }
   }
   // 右键菜单
   #contextmenu {
