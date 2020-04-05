@@ -377,7 +377,7 @@ const minimap = new G6Editor.Minimap({
 
 
 
-## 编辑器
+## Editor 编辑器
 
 该类是整个 g6-editor 的主控类，其主要职责是将 g6-editor 的各个组件协同起来。（摘自官方文档并做了微调）
 
@@ -413,7 +413,65 @@ const editor = new G6Editor();
 | getDefaultCfg       |            |                                                           |
 | setCommandDOMenable |            |                                                           |
 
-> 
+
+
+## Page 页面
+
+page 不需要独立去实例化之类的设置，从使用上来，可以说和 editor 是一体的，实例化完editor 就有 page了，就可以通过 js 获取 page了。
+
+```
+let page = editor.getCurrentPage()
+```
+
+
+
+## Flow 流程图
+
+### 简介
+
+流程图页面类，专用于构建有向的流程图编辑器。
+
+继承自 Page，因此在实例化完 editor 后，我们就可以通过 js 获取 Flow 了。
+
+```javascript
+editor.getCurrentPage().getGraph()
+```
+
+### 配置项
+
+
+
+### 静态方法
+
+#### registerNode
+
+注册⼀个流程图节点 
+
+
+
+#### registerEdge
+
+注册⼀个流程图边
+
+
+
+
+
+### 实例方法
+
+
+
+
+
+## Koni 网络图/拓扑图
+
+
+
+## MindMap 思维导图/脑图
+
+
+
+
 
 
 
@@ -506,9 +564,44 @@ console.log(events);
 
 方法有很多，我可能没办法将全部都列出来并解释，在实际操作中，更多的是需要大家自己通过在控制台打印的方式，在原型链中查找符合需求的方法。
 
+### 开启网格对齐
+
+showGrid
+
+
+
+### 关闭网格对齐
+
+hideGrid
+
+
+
 ### 删除元素
 
 remove
+
+
+
+### 调整画布内容整体方位
+
+```javascript
+editor.getCurrentPage().getGraph().setFitView("cc")
+```
+
+方位有以下9种：
+
+> 左上	中上	右上
+>
+> 左中	中间	右中
+>
+> 左下	下中	右下
+
+|  tl  |  tc  |  tr  |
+| :--: | :--: | :--: |
+|  lc  |  cc  |  rc  |
+|  bl  |  bc  |  br  |
+
+
 
 
 
