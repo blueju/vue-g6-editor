@@ -434,10 +434,114 @@ let page = editor.getCurrentPage()
 继承自 Page，因此在实例化完 editor 后，我们就可以通过 js 获取 Flow 了。
 
 ```javascript
-editor.getCurrentPage().getGraph()
+editor.getCurrentPage().getGraph({
+  graph: {
+    container: "page",
+    // ...
+  },
+  align: {
+    // ...
+  },
+  grid: {
+    // ...
+  },
+  shortcut: {
+    // ...
+  },
+  noEndEdge: true,
+});
 ```
 
 ### 配置项
+
+#### graph
+
+G6 图配置项，参考以下：
+
+- 3.0 版本 https://www.yuque.com/antv/g6/graph#cXwZ0
+- 2.0 版本 https://www.yuque.com/antv/g6/api-graph
+
+注意：svg 渲染暂时有⽐较严重的性能问题，暂时不推荐使⽤。
+
+#### align
+
+对齐配置项，是个对象
+
+```
+
+```
+
+##### line
+
+对齐线样式
+
+默认样式如下：
+
+> 在源码中搜索 alignLineStyle 可找到
+
+```javascript
+{
+    // 对齐线颜色
+	stroke: "#FA8C16",
+    // 对齐线粗细
+	lineWidth: 1
+},
+```
+
+##### item
+
+图项对齐
+
+布尔类型或者字符串类型
+
+有6个值可填入
+
+| 值         | 备注           |
+| ---------- | -------------- |
+| true       | 开启全方位对齐 |
+| false      | 不开启对齐     |
+| horizontal | 仅开启水平对齐 |
+| vertical   | 仅开启垂直对齐 |
+| center     | 仅开启居中对齐 |
+
+##### grid
+
+网格对齐
+
+布尔类型或者字符串类型
+
+有4个值可填入
+
+具体差别我也暂时不是很清楚
+
+| 值    | 备注         |
+| ----- | ------------ |
+| true  | 开启网格对齐 |
+| false | 关闭网格对齐 |
+| cc    | 居中对齐     |
+| tl    | 左上角对其   |
+
+
+
+#### grid
+
+
+
+#### shortcut
+
+> 控制快捷键是否开启
+
+
+
+#### noEndEdge
+
+> 布尔类型，默认是true
+
+是否支持悬空边
+
+
+
+
 
 
 
