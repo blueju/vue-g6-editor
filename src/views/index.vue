@@ -163,14 +163,10 @@
               <div class="main">
                 <el-form label-width="80px" label-position="right">
                   <el-form-item label="网格对齐">
-                    <el-checkbox v-model="canvasAttributeForm.grid"></el-checkbox>
-                  </el-form-item>
-                  <el-form-item v-if="canvasAttributeForm.grid" label="网格尺寸">
-                    <el-input-number
-                      v-model="canvasAttributeForm.cell"
-                      :min="1"
-                      :max="100"
-                    ></el-input-number>
+                    <el-checkbox
+                      v-model="canvasAttributeForm.grid"
+                      @change="toggleGridShowStatus"
+                    ></el-checkbox>
                   </el-form-item>
                 </el-form>
               </div>
@@ -262,7 +258,7 @@ export default {
       },
       // 画布属性栏表单
       canvasAttributeForm: {
-        grid: false,
+        grid: true,
         cell: 20
       },
       // SVG节点图片URL地址
@@ -328,13 +324,15 @@ export default {
           },
           // 开启全方位对齐
           item: true,
-          grid: "cc" // 网格对齐
+          // 网格对齐
+          grid: true
         },
         grid: {
-          // cell: 20 // 网孔尺寸
+          // 网孔尺寸
+          cell: 18
         },
         shortcut: {
-          // 开启保存快捷键
+          // 开启自定义命令保存的快捷键
           save: true
         }
       });
@@ -420,7 +418,14 @@ export default {
     openSaveAsImageDialog() {
       this.saveAsImageDialogVisible = true;
     },
-    //
+    // 开启/关闭网格对齐
+    toggleGridShowStatus(value) {
+      if (value) {
+        this.editor.getCurrentPage().showGrid();
+      } else {
+        this.editor.getCurrentPage().hideGrid();
+      }
+    },
     // 保存为图片
     saveAsImage() {
       let newCanvas;
