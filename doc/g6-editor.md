@@ -1,10 +1,16 @@
 # 阅读建议
 
-由于本文档目录太多，建议安装Chrome插件 [Smart TOC](https://chrome.google.com/webstore/detail/smart-toc/lifgeihcfpkmmlfjbailfpfhbahhibba)，可清晰一览文档层次结构，同时也方便按目录跳转查看。
+本文档目录层级比较多，建议安装Chrome插件 [Smart TOC](https://chrome.google.com/webstore/detail/smart-toc/lifgeihcfpkmmlfjbailfpfhbahhibba)，这样可清晰一览文档目录层次结构，同时也方便跳转查看。
 
-因本人仍在开发及探索中，目前此文档的层级结构尚未确定，只能是碰到什么便整理总结什么。
 
-Github：https://github.com/blueju/vue-g6-editor
+
+因为本人仍在开发及探索中，所以文档的目录层级结构仍可能调整、内容尚不完整。
+
+暂时只能是碰到什么便整理总结什么，如果有不懂的或希望补充的，可前往Github给我提issue
+
+> Github
+>
+> https://github.com/blueju/vue-g6-editor
 
 
 
@@ -458,6 +464,8 @@ editor.getCurrentPage().getGraph({
 
 G6 图配置项，参考以下：
 
+> g6-editor官网文档中附的G6链接已404失效，以下是我找到的新G6文档链接
+
 - 3.0 版本 https://www.yuque.com/antv/g6/graph#cXwZ0
 - 2.0 版本 https://www.yuque.com/antv/g6/api-graph
 
@@ -465,73 +473,68 @@ G6 图配置项，参考以下：
 
 #### align
 
-对齐配置项，是个对象
-
-```
-
-```
+对齐配置项，对象类型
 
 ##### line
 
-对齐线样式
+辅助对齐线样式，对象类型
 
-默认样式如下：
+###### stroke
 
-> 在源码中搜索 alignLineStyle 可找到
+辅助对齐线颜色
 
-```javascript
-{
-    // 对齐线颜色
-	stroke: "#FA8C16",
-    // 对齐线粗细
-	lineWidth: 1
-},
-```
+###### lineWidth
+
+辅助对齐线粗细
 
 ##### item
 
-图项对齐
+元素对齐方式开关，布尔类型/字符串类型
 
-布尔类型或者字符串类型
-
-有6个值可填入
-
-| 值         | 备注           |
-| ---------- | -------------- |
-| true       | 开启全方位对齐 |
-| false      | 不开启对齐     |
-| horizontal | 仅开启水平对齐 |
-| vertical   | 仅开启垂直对齐 |
-| center     | 仅开启居中对齐 |
+| 值         | 备注                 |
+| ---------- | -------------------- |
+| true       | 开启全方位对齐，默认 |
+| false      | 不开启对齐           |
+| horizontal | 仅开启水平对齐       |
+| vertical   | 仅开启垂直对齐       |
+| center     | 仅开启居中对齐       |
 
 ##### grid
 
-网格对齐
-
-布尔类型或者字符串类型
-
-有4个值可填入
-
-具体差别我也暂时不是很清楚
+网格对齐开关，布尔类型/字符串类型
 
 | 值    | 备注         |
 | ----- | ------------ |
 | true  | 开启网格对齐 |
 | false | 关闭网格对齐 |
 | cc    | 居中对齐     |
-| tl    | 左上角对其   |
-
-
+| tl    | 左上角对齐   |
 
 #### grid
 
+网格配置项，对象类型
 
+##### cell
+
+网孔尺寸，数字类型
+
+##### line
+
+网格线样式，对象类型
+
+###### stroke
+
+网格线颜色
+
+###### lineWidth
+
+网格线粗细
 
 #### shortcut
 
-> 控制快捷键是否开启
+> 控制命令的快捷键是否开启
 
-
+g6-editor内置命令的均已经默认开启，如果我们自定义了新命令并希望能用快捷键触发，那么需要在此处开启，否则无法生效。
 
 #### noEndEdge
 
@@ -539,9 +542,45 @@ G6 图配置项，参考以下：
 
 是否支持悬空边
 
+#### 配置项示例
 
+> 配置这环节，需要自己多试试，对比效果
 
-
+```javascript
+const flow = new G6Editor.Flow({
+  graph: {
+    container: "page"
+  },
+  align: {
+    line: {
+      // 颜色
+      stroke: "#FA8C16",
+      // 粗细
+      lineWidth: 1
+    },
+    // 开启全方位对齐
+    item: true,
+    // 网格对齐
+    grid: true 
+  },
+  grid: {
+    // 网孔尺寸
+    cell: 20,
+    // 网格线样式
+    line: {
+      // 颜色
+      stroke: "#FA8C16",
+      // 粗细
+      lineWidth: 10
+    }
+  },
+  shortcut: {
+    // 开启自定义命令保存的快捷键
+    save: true
+  },
+  noEndEdge: true
+});
+```
 
 
 
