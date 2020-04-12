@@ -297,6 +297,7 @@ export default {
         execute(editor) {
           let needSaveData = editor.getCurrentPage().save();
           localStorage.setItem("flowData", JSON.stringify(needSaveData));
+          _this.save(needSaveData);
           _this.$message.success("数据已保存");
         },
         // 反向命令
@@ -492,6 +493,111 @@ export default {
         fileReader.readAsText(file);
       });
       uploadButton.click();
+    },
+    //
+    save(source) {
+      let edges = source.edges;
+      let nodes = source.nodes;
+
+      const Node = function(id) {
+        let node = nodes.find((item) => {
+          return item.id === id;
+        });
+        return {
+          id: node.id,
+          nodeName: node.label,
+          in: [],
+          out: []
+        };
+      };
+
+      let visitedNodes = {};
+      for (let edge of edges) {
+        let sourceId = edge.source;
+        let targetId = edge.target;
+        let sourceNode = null;
+        let targetNode = null;
+
+        if (visitedNodes[sourceId]) {
+          sourceNode = visitedNodes[sourceId];
+        } else {
+          sourceNode = Node(sourceId);
+          visitedNodes[sourceId] = sourceNode;
+        }
+
+        if (visitedNodes[targetId]) {
+          targetNode = visitedNodes[targetId];
+        } else {
+          visitedNodes[targetId] = targetNode = Node(targetId);
+        }
+
+        sourceNode.out.push({
+          edge,
+          target: targetNode
+        });
+
+        targetNode.in.push({
+          edge,
+          source: sourceNode
+        });
+      }
+
+      console.log(visitedNodes);
+      let root = null;
+      let end = null;
+
+      for (let item of Object.keys(visitedNodes)) {
+        if (visitedNodes[item].in.length === 0) root = visitedNodes[item];
+        if (visitedNodes[item].out.length === 0) end = visitedNodes[item];
+      }
+
+      let ret = {};
+      ret.name = root.nodeName;
+      ret.description = root.description;
+      ret.version = 1;
+      ret.steps = [];
+      for (let item of root.out) {
+        if (item.target.out.length === 1) {
+          getSimple(item.target, ret.steps);
+        } else if (item.target.out.length > 1) {
+          ret.steps.push(getDecision(item.target));
+        }
+      }
+
+      function getSimple(item, array) {
+        let mid = {
+          id: item.id,
+          name: item.nodeName,
+          type: "SIMPLE"
+        };
+        array.push(mid);
+        let next = item.out[0].target;
+        if (next.out.length === 1) {
+          getSimple(next, array);
+        } else if (next.out.length > 1) {
+          array.push(getDecision(next));
+        }
+      }
+
+      function getDecision(item) {
+        let mid = {
+          id: item.id,
+          name: item.nodeName,
+          type: "DECISION",
+          decisionCases: {}
+        };
+        for (let next of item.out) {
+          mid.decisionCases[next.edge.label] = [];
+          if (next.target.out.length === 1) {
+            getSimple(next.target, mid.decisionCases[next.edge.label]);
+          } else if (next.target.out.length > 1) {
+            mid.decisionCases[next.edge.label].push(getDecision(next.target));
+          }
+        }
+        return mid;
+      }
+
+      console.log(JSON.stringify(ret, null, 2));
     }
   }
 };
