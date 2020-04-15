@@ -357,9 +357,11 @@ export default {
         container: "detailpannel"
       });
       // 缩略图
+      let minimapWidth = getComputedStyle(document.querySelector(".right-part")).width;
+      minimapWidth = Number(minimapWidth.replace(/px$/, ""));
       const minimap = new G6Editor.Minimap({
         container: "minimap",
-        width: 320,
+        width: minimapWidth,
         height: 200
       });
       // 右键菜单
