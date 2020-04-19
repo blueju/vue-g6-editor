@@ -15,6 +15,8 @@
 [g6-editor 文档](./doc/g6-editor.md)
 
 
+[vue-g6-editor demo](./dist/index.html)
+
 
 # 安装依赖
 
