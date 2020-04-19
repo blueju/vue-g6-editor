@@ -1,0 +1,17 @@
+<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="82" height="82" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_4" width="80" height="400" x="1" y="1" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="139.5" cy="166.4375" id="svg_2"/>
+  <rect stroke="#5cdbd3" 高度="56" transform="rotate(45 40.04504776000976,40.213043212890625) " 宽度="55" id="svg_5" height="55.386692" width="55.38669" y="12.519695" x="12.351704" stroke-width="null" fill="#e8fffb"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Arvo, sans-serif" font-size="14" id="svg_6" y="45.754652" x="12.013331" stroke-width="0" stroke="#5cdbd3" fill="#000000">条件节点</text>
+ </g>
+</svg>
