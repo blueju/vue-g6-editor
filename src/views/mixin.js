@@ -1,9 +1,5 @@
 export default {
   methods: {
-    data() {
-      // 画布
-      page: null;
-    },
     // 保存节点属性
     saveNodeAttribute() {
       this.editor.executeCommand(() => {
@@ -13,8 +9,7 @@ export default {
         const selectedItem = page.getSelected()[0];
         page.update(selectedItem.id, {
           label: this.nodeAttributeForm.label,
-          size:
-            this.nodeAttributeForm.width + "*" + this.nodeAttributeForm.height,
+          size: this.nodeAttributeForm.width + "*" + this.nodeAttributeForm.height,
           color: this.nodeAttributeForm.color
         });
       });
@@ -29,7 +24,7 @@ export default {
         console.log(this.edgeAttributeForm);
         page.update(selectedItem.id, {
           label: this.edgeAttributeForm.label,
-          shape: this.edgeAttributeForm.shape,
+          shape: this.edgeAttributeForm.shape
         });
       });
     }
