@@ -4539,6 +4539,10 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.npm.taobao.org/neo-async/download/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
 
+netflix-conductor-json-tree@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.npm.taobao.org/netflix-conductor-json-tree/download/netflix-conductor-json-tree-0.0.4.tgz#6007a3b33236960d8e56db98d1fbc781c27f3ffc"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/nice-try/download/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

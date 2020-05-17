@@ -241,7 +241,7 @@
 <script>
 import G6Editor from "@antv/g6-editor";
 import mixin from "./mixin";
-import { construct } from "../../../netflix-conductor-json-tree/dist/index";
+import { construct } from "netflix-conductor-json-tree/dist/index";
 export default {
   name: "VueG6Editor",
   mixins: [mixin],
