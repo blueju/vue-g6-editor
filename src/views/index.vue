@@ -168,6 +168,12 @@
                       @change="toggleGridShowStatus"
                     ></el-checkbox>
                   </el-form-item>
+                  <el-form-item label="编辑状态">
+                    <el-select v-model="editStatus" placeholder="请选择">
+                      <el-option label="查看" value="view"></el-option>
+                      <el-option label="修改" value="alter"></el-option>
+                    </el-select>
+                  </el-form-item>
                 </el-form>
               </div>
             </div>
@@ -271,11 +277,16 @@ export default {
       // 编辑器
       editor: null,
       saveAsImageDialogVisible: false,
-      saveAsImageFormat: "jpg"
+      saveAsImageFormat: "jpg",
+      editStatus: "view"
     };
   },
   mounted() {
     this.initG6Editor();
+    // 提供默认数据模型，方便
+    let dataModel =
+      '{"nodes":[{"type":"node","shape":"flow-circle","size":"72*72","label":"开始节点","color":"#FA8C16","nodetype":"startNode","x":415,"y":127,"id":"7c84bce9","index":0},{"type":"node","size":"100*50","label":"常规节点","color":"#1890ff","x":415,"y":237.5,"id":"bf1aeba8","index":2}],"edges":[{"source":"7c84bce9","sourceAnchor":2,"target":"bf1aeba8","targetAnchor":0,"id":"ef37a42f","shape":"flow-polyline","index":1}]}';
+    this.editor.getCurrentPage().read(JSON.parse(dataModel));
   },
   methods: {
     // 初始化
@@ -381,6 +392,14 @@ export default {
 
       // 获取当前画布
       const currentPage = editor.getCurrentPage();
+      // 此处为了模拟数据模型能渲染到画布中，所以延时2秒绑定beforechange事件
+      setTimeout(() => {
+        currentPage.on("beforechange", (e) => {
+          if (_this.editStatus === "view") {
+            throw "当前编辑状态为查看，禁止修改";
+          }
+        });
+      }, 2000);
       currentPage.on("afterchange", (e) => {
         if (e.action === "add") {
           if (e.model.nodetype === "startNode" || e.model.nodetype === "endNode") {
