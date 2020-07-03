@@ -17,17 +17,17 @@
 # 安装依赖
 
 ```
-yarn install
+npm install
 ```
 
 # 启动服务
 
 ```
-yarn serve
+npm run dev
 ```
 
 # 编译构建
 
 ```
-yarn build
+npm run build
 ```
