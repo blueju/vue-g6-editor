@@ -10,7 +10,7 @@
 
 # 文档
 
-[g6-editor 文档](./doc/g6-editor.md)
+[g6-editor 文档](./doc/v1/g6-editor.md)
 
 [vue-g6-editor demo](https://blueju.github.io/vue-g6-editor/dist/index.html)
 
